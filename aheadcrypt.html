@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AheadCrypt | Master Elliott Wave Analysis for Crypto & Financial Markets</title>
+    <meta name="description" content="AheadCrypt provides expert Elliott Wave analysis, crypto signals, market forecasts, and educational resources for traders. Master the market with wave theory.">
+    <meta name="keywords" content="Elliott Wave, cryptocurrency analysis, forex trading, technical analysis, wave theory, crypto signals, market forecast">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-card: #1a1f2e;
+            --bg-hover: #242b3d;
+            --accent-green: #00ff88;
+            --accent-green-dim: rgba(0, 255, 136, 0.15);
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #1e293b;
+            --gradient-hero: linear-gradient(135deg, #0a0e17 0%, #111827 50%, #0f172a 100%);
+            --gradient-accent: linear-gradient(135deg, #00ff88 0%, #06b6d4 100%);
+            --shadow-glow: 0 0 30px rgba(0, 255, 136, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-card); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-green); }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(10, 14, 23, 0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color); transition: var(--transition);
+        }
+        .navbar.scrolled { background: rgba(10, 14, 23, 0.95); box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+
+        .nav-container {
+            max-width: 1280px; margin: 0 auto; padding: 0 24px;
+            display: flex; justify-content: space-between; align-items: center; height: 72px;
+        }
+
+        .logo {
+            display: flex; align-items: center; gap: 12px; text-decoration: none;
+            color: var(--text-primary); font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px;
+        }
+        .logo-icon {
+            width: 40px; height: 40px; background: var(--gradient-accent); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--bg-primary); font-size: 1.2rem;
+        }
+        .logo span {
+            background: var(--gradient-accent); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none; font-weight: 500;
+            font-size: 0.95rem; transition: var(--transition); position: relative;
+        }
+        .nav-links a:hover { color: var(--accent-green); }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -6px; left: 0; width: 0; height: 2px;
+            background: var(--accent-green); transition: var(--transition);
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-cta {
+            background: var(--gradient-accent); color: var(--bg-primary) !important;
+            padding: 10px 24px; border-radius: 8px; font-weight: 600;
+            transition: var(--transition); box-shadow: 0 4px 15px rgba(0,255,136,0.2);
+        }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0,255,136,0.3); }
+        .nav-cta::after { display: none !important; }
+
+        .mobile-toggle {
+            display: none; background: none; border: none;
+            color: var(--text-primary); font-size: 1.5rem; cursor: pointer;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden; background: var(--gradient-hero);
+            padding: 120px 24px 80px;
+        }
+        .hero-bg { position: absolute; inset: 0; overflow: hidden; }
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image: 
+                linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove { 0% { transform: translate(0,0); } 100% { transform: translate(60px,60px); } }
+
+        .hero-particles { position: absolute; inset: 0; }
+        .particle {
+            position: absolute; width: 4px; height: 4px; background: var(--accent-green);
+            border-radius: 50%; opacity: 0.3; animation: float 15s infinite;
+        }
+        @keyframes float {
+            0%,100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            25% { transform: translateY(-100px) translateX(50px); opacity: 0.6; }
+            50% { transform: translateY(-50px) translateX(-30px); opacity: 0.2; }
+            75% { transform: translateY(-150px) translateX(20px); opacity: 0.5; }
+        }
+
+        .hero-content { position: relative; z-index: 2; text-align: center; max-width: 900px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--accent-green-dim); border: 1px solid rgba(0,255,136,0.2);
+            padding: 8px 20px; border-radius: 50px; font-size: 0.875rem; font-weight: 500;
+            color: var(--accent-green); margin-bottom: 32px; animation: fadeInUp 0.8s ease-out;
+        }
+        .hero-badge .pulse {
+            width: 8px; height: 8px; background: var(--accent-green);
+            border-radius: 50%; animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1;
+            margin-bottom: 24px; animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        .hero h1 span {
+            background: var(--gradient-accent); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.35rem); color: var(--text-secondary);
+            max-width: 700px; margin: 0 auto 40px; animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        .hero-cta-group {
+            display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .btn-primary {
+            background: var(--gradient-accent); color: var(--bg-primary); padding: 16px 32px;
+            border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 1rem;
+            transition: var(--transition); display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 20px rgba(0,255,136,0.25); border: none; cursor: pointer;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,255,136,0.35); }
+
+        .btn-secondary {
+            background: transparent; color: var(--text-primary); padding: 16px 32px;
+            border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 1rem;
+            transition: var(--transition); display: inline-flex; align-items: center; gap: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover { border-color: var(--accent-green); color: var(--accent-green); background: var(--accent-green-dim); }
+
+        .hero-stats {
+            display: flex; justify-content: center; gap: 48px; margin-top: 60px;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--accent-green); font-family: 'JetBrains Mono', monospace; }
+        .stat-label { font-size: 0.875rem; color: var(--text-muted); margin-top: 4px; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Sections */
+        .section { padding: 100px 24px; max-width: 1280px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 64px; }
+        .section-tag {
+            display: inline-block; background: var(--accent-green-dim); color: var(--accent-green);
+            padding: 6px 16px; border-radius: 50px; font-size: 0.875rem; font-weight: 600;
+            margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; margin-bottom: 16px; }
+        .section-title span {
+            background: var(--gradient-accent); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .section-desc { color: var(--text-secondary); font-size: 1.125rem; max-width: 600px; margin: 0 auto; }
+
+        /* Articles */
+        .articles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 24px; }
+        .article-card {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
+            overflow: hidden; transition: var(--transition); cursor: pointer;
+        }
+        .article-card:hover {
+            transform: translateY(-8px); border-color: var(--accent-green); box-shadow: var(--shadow-glow);
+        }
+        .article-image {
+            height: 200px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            position: relative; overflow: hidden;
+        }
+        .article-image img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .article-card:hover .article-image img { transform: scale(1.05); }
+        .article-category {
+            position: absolute; top: 16px; left: 16px; background: var(--accent-green);
+            color: var(--bg-primary); padding: 4px 12px; border-radius: 6px;
+            font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+        }
+        .article-content { padding: 24px; }
+        .article-meta {
+            display: flex; gap: 16px; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 12px;
+        }
+        .article-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 12px; line-height: 1.4; }
+        .article-excerpt { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 16px; }
+        .article-link {
+            color: var(--accent-green); text-decoration: none; font-weight: 600; font-size: 0.9rem;
+            display: inline-flex; align-items: center; gap: 6px; transition: var(--transition);
+        }
+        .article-link:hover { gap: 10px; }
+
+        /* Learning Hub */
+        .learning-hub { background: var(--bg-secondary); position: relative; }
+        .learning-hub::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+        }
+        .tutorials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .tutorial-card {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
+            padding: 32px; transition: var(--transition); position: relative; overflow: hidden;
+        }
+        .tutorial-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: var(--gradient-accent); transform: scaleX(0); transition: var(--transition);
+        }
+        .tutorial-card:hover::before { transform: scaleX(1); }
+        .tutorial-card:hover { border-color: var(--accent-green); transform: translateY(-4px); }
+        .tutorial-number {
+            font-size: 3rem; font-weight: 800; color: var(--accent-green); opacity: 0.2;
+            font-family: 'JetBrains Mono', monospace; line-height: 1; margin-bottom: 16px;
+        }
+        .tutorial-icon {
+            width: 48px; height: 48px; background: var(--accent-green-dim); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent-green); font-size: 1.25rem; margin-bottom: 20px;
+        }
+        .tutorial-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 12px; }
+        .tutorial-desc { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; }
+        .tutorial-progress { display: flex; align-items: center; gap: 12px; }
+        .progress-bar {
+            flex: 1; height: 6px; background: var(--bg-hover); border-radius: 3px; overflow: hidden;
+        }
+        .progress-fill { height: 100%; background: var(--gradient-accent); border-radius: 3px; transition: width 1s ease-out; }
+        .progress-text { font-size: 0.875rem; color: var(--accent-green); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+
+        /* Charts */
+        .chart-tabs {
+            display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; justify-content: center;
+        }
+        .chart-tab {
+            padding: 12px 24px; background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 8px; color: var(--text-secondary); font-weight: 500; cursor: pointer;
+            transition: var(--transition); font-family: 'Inter', sans-serif; font-size: 0.95rem;
+        }
+        .chart-tab.active { background: var(--accent-green-dim); border-color: var(--accent-green); color: var(--accent-green); }
+        .chart-tab:hover:not(.active) { border-color: var(--text-muted); color: var(--text-primary); }
+        .chart-container { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; }
+        .chart-header {
+            padding: 20px 24px; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+        }
+        .chart-title { font-weight: 600; font-size: 1.1rem; }
+        .chart-pair {
+            display: flex; align-items: center; gap: 8px; background: var(--bg-hover);
+            padding: 6px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
+        }
+        .chart-pair .price-up { color: var(--accent-green); }
+        .chart-pair .price-down { color: #ef4444; }
+        .tradingview-widget { height: 500px; width: 100%; }
+        .chart-analysis { padding: 24px; border-top: 1px solid var(--border-color); }
+        .analysis-title { font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .analysis-title i { color: var(--accent-green); }
+        .analysis-text { color: var(--text-secondary); line-height: 1.8; }
+        .wave-count {
+            display: inline-flex; align-items: center; gap: 4px; background: var(--accent-green-dim);
+            padding: 4px 12px; border-radius: 6px; font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem; color: var(--accent-green); margin: 0 4px;
+        }
+
+        /* About */
+        .about-section { background: var(--bg-secondary); position: relative; }
+        .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+        .about-text h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 24px; }
+        .about-text h2 span {
+            background: var(--gradient-accent); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .about-text p { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 24px; line-height: 1.8; }
+        .mission-list { list-style: none; margin-top: 32px; }
+        .mission-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; color: var(--text-secondary); }
+        .mission-list li i { color: var(--accent-green); font-size: 1.1rem; }
+        .about-visual { position: relative; }
+        .about-card {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px;
+            padding: 40px; position: relative; z-index: 2;
+        }
+        .about-card::before {
+            content: ''; position: absolute; inset: -1px; border-radius: 20px; padding: 1px;
+            background: var(--gradient-accent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.3;
+        }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .stat-box { text-align: center; padding: 24px; background: var(--bg-hover); border-radius: 12px; transition: var(--transition); }
+        .stat-box:hover { transform: translateY(-4px); background: var(--accent-green-dim); }
+        .stat-box .number { font-size: 2.5rem; font-weight: 700; color: var(--accent-green); font-family: 'JetBrains Mono', monospace; }
+        .stat-box .label { font-size: 0.875rem; color: var(--text-muted); margin-top: 8px; }
+
+        /* Newsletter */
+        .newsletter {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            position: relative; overflow: hidden;
+        }
+        .newsletter::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(0,255,136,0.05) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .newsletter-content { position: relative; z-index: 2; text-align: center; max-width: 700px; margin: 0 auto; }
+        .newsletter h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 16px; }
+        .newsletter p { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 32px; }
+        .newsletter-form { display: flex; gap: 12px; max-width: 500px; margin: 0 auto; }
+        .newsletter-input {
+            flex: 1; padding: 16px 24px; background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 12px; color: var(--text-primary); font-size: 1rem; font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+        }
+        .newsletter-input:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 0 3px var(--accent-green-dim); }
+        .newsletter-input::placeholder { color: var(--text-muted); }
+
+        /* Contact */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+        .contact-info h3 { font-size: 2rem; font-weight: 700; margin-bottom: 16px; }
+        .contact-info p { color: var(--text-secondary); margin-bottom: 32px; }
+        .contact-methods { display: flex; flex-direction: column; gap: 20px; }
+        .contact-method {
+            display: flex; align-items: center; gap: 16px; padding: 20px;
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
+            transition: var(--transition);
+        }
+        .contact-method:hover { border-color: var(--accent-green); transform: translateX(8px); }
+        .contact-icon {
+            width: 48px; height: 48px; background: var(--accent-green-dim); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent-green); font-size: 1.25rem;
+        }
+        .contact-details h4 { font-weight: 600; margin-bottom: 4px; }
+        .contact-details span { color: var(--text-muted); font-size: 0.9rem; }
+        .social-links { display: flex; gap: 12px; margin-top: 32px; }
+        .social-link {
+            width: 44px; height: 44px; background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary); text-decoration: none; transition: var(--transition);
+        }
+        .social-link:hover { background: var(--accent-green); color: var(--bg-primary); border-color: var(--accent-green); transform: translateY(-3px); }
+        .contact-form { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 40px; }
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 14px 18px; background: var(--bg-hover); border: 1px solid var(--border-color);
+            border-radius: 10px; color: var(--text-primary); font-size: 1rem; font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 0 3px var(--accent-green-dim); }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+
+        /* Footer */
+        .footer { background: var(--bg-secondary); border-top: 1px solid var(--border-color); padding: 60px 24px 24px; }
+        .footer-grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+        .footer-brand { max-width: 300px; }
+        .footer-brand .logo { margin-bottom: 16px; }
+        .footer-brand p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
+        .footer-links h4 { font-weight: 600; margin-bottom: 20px; color: var(--text-primary); }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: var(--transition); font-size: 0.95rem; }
+        .footer-links a:hover { color: var(--accent-green); }
+        .footer-bottom { max-width: 1280px; margin: 0 auto; padding-top: 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .footer-bottom p { color: var(--text-muted); font-size: 0.875rem; }
+
+        /* Animations */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100vh;
+            background: var(--bg-primary); z-index: 1001; padding: 100px 32px 32px;
+            transition: right 0.3s ease; border-left: 1px solid var(--border-color);
+        }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
+        .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-menu-links { list-style: none; }
+        .mobile-menu-links li { margin-bottom: 24px; }
+        .mobile-menu-links a { color: var(--text-primary); text-decoration: none; font-size: 1.25rem; font-weight: 500; display: block; padding: 8px 0; transition: var(--transition); }
+        .mobile-menu-links a:hover { color: var(--accent-green); padding-left: 12px; }
+        .mobile-menu-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; }
+
+        /* Wave decoration */
+        .wave-decoration { position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to top, var(--bg-primary), transparent); z-index: 1; }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 32px; right: 32px; background: var(--bg-card);
+            border: 1px solid var(--accent-green); border-radius: 12px; padding: 16px 24px;
+            display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-glow);
+            transform: translateY(100px); opacity: 0; transition: all 0.4s ease; z-index: 2000;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast-icon { color: var(--accent-green); font-size: 1.25rem; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .about-content, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-toggle { display: block; }
+            .hero-stats { flex-direction: column; gap: 24px; }
+            .articles-grid { grid-template-columns: 1fr; }
+            .tutorials-grid { grid-template-columns: 1fr; }
+            .stat-grid { grid-template-columns: 1fr 1fr; }
+            .newsletter-form { flex-direction: column; }
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .chart-tabs { justify-content: flex-start; overflow-x: auto; padding-bottom: 8px; }
+            .section { padding: 60px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon"><i class="fas fa-wave-square"></i></div>
+                Ahead<span>Crypt</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#articles">Articles</a></li>
+                <li><a href="#learning">Learning Hub</a></li>
+                <li><a href="#charts">Charts</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#newsletter" class="nav-cta">Subscribe</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="mobileClose"><i class="fas fa-times"></i></button>
+        <ul class="mobile-menu-links">
+            <li><a href="#articles">Articles</a></li>
+            <li><a href="#learning">Learning Hub</a></li>
+            <li><a href="#charts">Charts</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#newsletter" style="color: var(--accent-green);">Subscribe</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="hero-bg">
+            <div class="hero-grid"></div>
+            <div class="hero-particles" id="particles"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge"><span class="pulse"></span>Live Market Analysis Available</div>
+            <h1>Master the Market with<br><span>Elliott Wave Analysis</span></h1>
+            <p class="hero-subtitle">Professional wave analysis, crypto signals, and educational resources to help you navigate financial markets with confidence and precision.</p>
+            <div class="hero-cta-group">
+                <a href="#articles" class="btn-primary"><i class="fas fa-book-open"></i>Explore Articles</a>
+                <a href="#charts" class="btn-secondary"><i class="fas fa-chart-line"></i>View Live Charts</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item"><div class="stat-value">500+</div><div class="stat-label">Articles Published</div></div>
+                <div class="stat-item"><div class="stat-value">12K+</div><div class="stat-label">Active Traders</div></div>
+                <div class="stat-item"><div class="stat-value">89%</div><div class="stat-label">Accuracy Rate</div></div>
+            </div>
+        </div>
+        <div class="wave-decoration"></div>
+    </section>
+
+    <!-- Articles -->
+    <section class="section" id="articles">
+        <div class="section-header fade-in">
+            <span class="section-tag">Latest Insights</span>
+            <h2 class="section-title">Featured <span>Articles</span></h2>
+            <p class="section-desc">In-depth analysis and educational content for traders at every level</p>
+        </div>
+        <div class="articles-grid">
+            <article class="article-card fade-in">
+                <div class="article-image">
+                    <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&h=400&fit=crop" alt="Bitcoin Analysis">
+                    <span class="article-category">Market Forecasts</span>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta"><span><i class="far fa-calendar"></i> May 5, 2026</span><span><i class="far fa-clock"></i> 8 min read</span></div>
+                    <h3 class="article-title">Bitcoin Completes Wave 4 Correction: Wave 5 Target at $92K</h3>
+                    <p class="article-excerpt">Comprehensive Elliott Wave analysis of Bitcoin's current structure, identifying the completion of a complex W-X-Y correction pattern...</p>
+                    <a href="#" class="article-link">Read Analysis <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+            <article class="article-card fade-in">
+                <div class="article-image">
+                    <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=400&fit=crop" alt="Forex Analysis">
+                    <span class="article-category" style="background: var(--accent-blue);">Advanced Analysis</span>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta"><span><i class="far fa-calendar"></i> May 4, 2026</span><span><i class="far fa-clock"></i> 12 min read</span></div>
+                    <h3 class="article-title">EUR/USD: Extended Wave 3 in Progress - Fibonacci Extensions</h3>
+                    <p class="article-excerpt">Deep dive into the EUR/USD daily chart structure, utilizing Fibonacci extensions to project wave 3 targets and identify optimal entry zones...</p>
+                    <a href="#" class="article-link">Read Analysis <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+            <article class="article-card fade-in">
+                <div class="article-image">
+                    <img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=600&h=400&fit=crop" alt="Elliott Wave Guide">
+                    <span class="article-category" style="background: var(--accent-cyan);">Beginner Guides</span>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta"><span><i class="far fa-calendar"></i> May 3, 2026</span><span><i class="far fa-clock"></i> 15 min read</span></div>
+                    <h3 class="article-title">Elliott Wave Theory: The Complete Beginner's Guide (2026)</h3>
+                    <p class="article-excerpt">Master the fundamentals of wave theory with visual examples, rule explanations, and practical applications for cryptocurrency markets...</p>
+                    <a href="#" class="article-link">Read Guide <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+            <article class="article-card fade-in">
+                <div class="article-image">
+                    <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=600&h=400&fit=crop" alt="Ethereum">
+                    <span class="article-category">Crypto Signals</span>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta"><span><i class="far fa-calendar"></i> May 2, 2026</span><span><i class="far fa-clock"></i> 6 min read</span></div>
+                    <h3 class="article-title">ETH/USDT: Triangle Formation Suggests Breakout Above $3,200</h3>
+                    <p class="article-excerpt">Contracting triangle pattern identified on the 4-hour chart. Analysis of wave structure and projected breakout targets with risk management...</p>
+                    <a href="#" class="article-link">Read Signal <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+            <article class="article-card fade-in">
+                <div class="article-image">
+                    <img src="https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=600&h=400&fit=crop" alt="Solana">
+                    <span class="article-category" style="background: var(--accent-blue);">Advanced Analysis</span>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta"><span><i class="far fa-calendar"></i> May 1, 2026</span><span><i class="far fa-clock"></i> 10 min read</span></div>
+                    <h3 class="article-title">SOL: Diagonal Pattern Completion Signals Major Reversal</h3>
+                    <p class="article-excerpt">Leading diagonal identified on the weekly chart. Detailed wave count analysis and projected reversal targets for the next major cycle...</p>
+                    <a href="#" class="article-link">Read Analysis <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+            <article class="article-card fade-in">
+                <div class="article-image">
+                    <img src="https://images.unsplash.com/photo-1605792657660-596af9009e82?w=600&h=400&fit=crop" alt="Wave Patterns">
+                    <span class="article-category" style="background: var(--accent-cyan);">Beginner Guides</span>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta"><span><i class="far fa-calendar"></i> Apr 30, 2026</span><span><i class="far fa-clock"></i> 18 min read</span></div>
+                    <h3 class="article-title">Understanding Corrective Waves: Zigzags, Flats, and Triangles</h3>
+                    <p class="article-excerpt">Comprehensive guide to identifying and trading corrective wave patterns. Real chart examples from BTC, ETH, and traditional markets...</p>
+                    <a href="#" class="article-link">Read Guide <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Learning Hub -->
+    <section class="section learning-hub" id="learning">
+        <div class="section-header fade-in">
+            <span class="section-tag">Education</span>
+            <h2 class="section-title">Elliott Wave <span>Learning Hub</span></h2>
+            <p class="section-desc">Step-by-step tutorials from basics to advanced wave counting techniques</p>
+        </div>
+        <div class="tutorials-grid">
+            <div class="tutorial-card fade-in">
+                <div class="tutorial-number">01</div>
+                <div class="tutorial-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3 class="tutorial-title">Wave Theory Foundations</h3>
+                <p class="tutorial-desc">Learn the core principles: 5-wave impulse patterns, 3-wave corrective structures, and the fractal nature of markets.</p>
+                <div class="tutorial-progress"><div class="progress-bar"><div class="progress-fill" style="width: 100%"></div></div><span class="progress-text">12 Lessons</span></div>
+            </div>
+            <div class="tutorial-card fade-in">
+                <div class="tutorial-number">02</div>
+                <div class="tutorial-icon"><i class="fas fa-ruler-combined"></i></div>
+                <h3 class="tutorial-title">Fibonacci & Wave Relationships</h3>
+                <p class="tutorial-desc">Master Fibonacci retracements, extensions, and how they apply to wave projections and target calculations.</p>
+                <div class="tutorial-progress"><div class="progress-bar"><div class="progress-fill" style="width: 100%"></div></div><span class="progress-text">8 Lessons</span></div>
+            </div>
+            <div class="tutorial-card fade-in">
+                <div class="tutorial-number">03</div>
+                <div class="tutorial-icon"><i class="fas fa-chart-bar"></i></div>
+                <h3 class="tutorial-title">Corrective Patterns Deep Dive</h3>
+                <p class="tutorial-desc">Zigzags, flats, triangles, and combinations. Learn to identify each pattern and anticipate the next move.</p>
+                <div class="tutorial-progress"><div class="progress-bar"><div class="progress-fill" style="width: 85%"></div></div><span class="progress-text">10 Lessons</span></div>
+            </div>
+            <div class="tutorial-card fade-in">
+                <div class="tutorial-number">04</div>
+                <div class="tutorial-icon"><i class="fas fa-crosshairs"></i></div>
+                <h3 class="tutorial-title">Advanced Wave Counting</h3>
+                <p class="tutorial-desc">Diagonal triangles, extensions, truncations, and complex corrections. Elevate your analysis skills.</p>
+                <div class="tutorial-progress"><div class="progress-bar"><div class="progress-fill" style="width: 70%"></div></div><span class="progress-text">14 Lessons</span></div>
+            </div>
+            <div class="tutorial-card fade-in">
+                <div class="tutorial-number">05</div>
+                <div class="tutorial-icon"><i class="fas fa-bitcoin-sign"></i></div>
+                <h3 class="tutorial-title">Crypto-Specific Analysis</h3>
+                <p class="tutorial-desc">Adapt Elliott Wave theory for cryptocurrency markets. Volatility considerations and 24/7 market dynamics.</p>
+                <div class="tutorial-progress"><div class="progress-bar"><div class="progress-fill" style="width: 60%"></div></div><span class="progress-text">9 Lessons</span></div>
+            </div>
+            <div class="tutorial-card fade-in">
+                <div class="tutorial-number">06</div>
+                <div class="tutorial-icon"><i class="fas fa-shield-halved"></i></div>
+                <h3 class="tutorial-title">Risk Management & Strategy</h3>
+                <p class="tutorial-desc">Position sizing, stop-loss placement based on invalidation levels, and building a complete trading plan.</p>
+                <div class="tutorial-progress"><div class="progress-bar"><div class="progress-fill" style="width: 90%"></div></div><span class="progress-text">7 Lessons</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charts -->
+    <section class="section chart-section" id="charts">
+        <div class="section-header fade-in">
+            <span class="section-tag">Live Analysis</span>
+            <h2 class="section-title">Market <span>Charts</span></h2>
+            <p class="section-desc">Real-time wave analysis with embedded TradingView charts</p>
+        </div>
+        <div class="chart-tabs fade-in">
+            <button class="chart-tab active" data-pair="BTCUSDT">BTC/USDT</button>
+            <button class="chart-tab" data-pair="ETHUSDT">ETH/USDT</button>
+            <button class="chart-tab" data-pair="SOLUSDT">SOL/USDT</button>
+            <button class="chart-tab" data-pair="EURUSD">EUR/USD</button>
+            <button class="chart-tab" data-pair="XAUUSD">Gold</button>
+        </div>
+        <div class="chart-container fade-in">
+            <div class="chart-header">
+                <div class="chart-title">Elliott Wave Analysis - Daily Timeframe</div>
+                <div class="chart-pair"><i class="fab fa-bitcoin"></i><span>BTC/USDT</span><span class="price-up">▲ 2.4%</span></div>
+            </div>
+            <div class="tradingview-widget" id="tradingview_chart"></div>
+            <div class="chart-analysis">
+                <div class="analysis-title"><i class="fas fa-wave-square"></i>Wave Count Analysis</div>
+                <p class="analysis-text">Current structure suggests completion of <span class="wave-count">Wave 4</span> correction in a complex W-X-Y pattern. Price action has respected the 0.382 Fibonacci retracement level at $58,400, forming a potential running flat. <span class="wave-count">Wave 5</span> projection targets <strong>$92,000 - $98,000</strong> zone based on 0.618 and 1.0 extensions of Wave 1 through 3. Invalidation level below <span class="wave-count">Wave 1</span> high at $52,000. Momentum indicators show bullish divergence on the 4H timeframe, supporting the wave count.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="section about-section" id="about">
+        <div class="about-content">
+            <div class="about-text fade-in">
+                <h2>About <span>AheadCrypt</span></h2>
+                <p>AheadCrypt was founded with a clear mission: to democratize Elliott Wave analysis and make it accessible to traders of all levels. We believe that understanding market structure through wave theory provides a significant edge in navigating the volatile crypto and forex markets.</p>
+                <p>Our team of certified Elliott Wave analysts combines decades of experience with cutting-edge technical analysis to deliver accurate, actionable insights that help you stay ahead of market moves.</p>
+                <ul class="mission-list">
+                    <li><i class="fas fa-check-circle"></i> Simplify complex wave theory concepts</li>
+                    <li><i class="fas fa-check-circle"></i> Provide data-driven market forecasts</li>
+                    <li><i class="fas fa-check-circle"></i> Build a community of informed traders</li>
+                    <li><i class="fas fa-check-circle"></i> Maintain transparency in all analysis</li>
+                </ul>
+            </div>
+            <div class="about-visual fade-in">
+                <div class="about-card">
+                    <div class="stat-grid">
+                        <div class="stat-box"><div class="number">500+</div><div class="label">Analysis Published</div></div>
+                        <div class="stat-box"><div class="number">89%</div><div class="label">Forecast Accuracy</div></div>
+                        <div class="stat-box"><div class="number">12K+</div><div class="label">Community Members</div></div>
+                        <div class="stat-box"><div class="number">24/7</div><div class="label">Market Coverage</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="section newsletter" id="newsletter">
+        <div class="newsletter-content fade-in">
+            <h2>Stay <span>Ahead</span> of the Market</h2>
+            <p>Get weekly Elliott Wave analysis, crypto signals, and educational content delivered straight to your inbox. No spam, just valuable insights.</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+                <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i>Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact">
+        <div class="section-header fade-in">
+            <span class="section-tag">Get in Touch</span>
+            <h2 class="section-title">Contact <span>Us</span></h2>
+            <p class="section-desc">Have questions or want to collaborate? We'd love to hear from you</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info fade-in">
+                <h3>Let's Connect</h3>
+                <p>Whether you're a beginner seeking guidance or an institution looking for professional analysis, our team is here to help.</p>
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="contact-details"><h4>Email</h4><span>analysis@aheadcrypt.com</span></div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-icon"><i class="fab fa-telegram"></i></div>
+                        <div class="contact-details"><h4>Telegram</h4><span>@AheadCryptSignals</span></div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-icon"><i class="fab fa-discord"></i></div>
+                        <div class="contact-details"><h4>Discord</h4><span>discord.gg/aheadcrypt</span></div>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" class="social-link" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="contact-form fade-in">
+                <form id="contactForm">
+                    <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" placeholder="John Doe" required></div>
+                    <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" placeholder="john@example.com" required></div>
+                    <div class="form-group"><label for="subject">Subject</label><input type="text" id="subject" placeholder="How can we help?" required></div>
+                    <div class="form-group"><label for="message">Message</label><textarea id="message" placeholder="Tell us about your inquiry..." required></textarea></div>
+                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;"><i class="fas fa-paper-plane"></i>Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="logo"><div class="logo-icon"><i class="fas fa-wave-square"></i></div>Ahead<span>Crypt</span></a>
+                <p>Empowering traders with professional Elliott Wave analysis and educational resources for crypto and financial markets.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Content</h4>
+                <ul><li><a href="#articles">Articles</a></li><li><a href="#learning">Learning Hub</a></li><li><a href="#charts">Live Charts</a></li><li><a href="#">Premium Analysis</a></li></ul>
+            </div>
+            <div class="footer-links">
+                <h4>Resources</h4>
+                <ul><li><a href="#">Wave Cheat Sheet</a></li><li><a href="#">Fibonacci Calculator</a></li><li><a href="#">Glossary</a></li><li><a href="#">API Access</a></li></ul>
+            </div>
+            <div class="footer-links">
+                <h4>Company</h4>
+                <ul><li><a href="#about">About Us</a></li><li><a href="#contact">Contact</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li></ul>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>© 2026 AheadCrypt. All rights reserved.</p><p>Markets are unpredictable. Trade responsibly.</p></div>
+    </footer>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"><i class="fas fa-check-circle toast-icon"></i><span id="toastMessage">Message sent successfully!</span></div>
+
+    <!-- TradingView Widget Script -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script>
+        // Initialize TradingView Chart
+        let tvWidget;
+        function initChart(symbol = 'BINANCE:BTCUSDT') {
+            if (tvWidget) tvWidget.remove();
+            tvWidget = new TradingView.widget({
+                "container_id": "tradingview_chart",
+                "autosize": true,
+                "symbol": symbol,
+                "interval": "D",
+                "timezone": "Etc/UTC",
+                "theme": "dark",
+                "style": "1",
+                "locale": "en",
+                "toolbar_bg": "#1a1f2e",
+                "enable_publishing": false,
+                "hide_top_toolbar": false,
+                "hide_legend": false,
+                "save_image": false,
+                "calendar": false,
+                "hide_volume": false,
+                "support_host": "https://www.tradingview.com",
+                "studies": ["RSI@tv-basicstudies", "MASimple@tv-basicstudies"],
+                "overrides": {
+                    "mainSeriesProperties.candleStyle.upColor": "#00ff88",
+                    "mainSeriesProperties.candleStyle.downColor": "#ef4444",
+                    "mainSeriesProperties.candleStyle.borderUpColor": "#00ff88",
+                    "mainSeriesProperties.candleStyle.borderDownColor": "#ef4444",
+                    "mainSeriesProperties.candleStyle.wickUpColor": "#00ff88",
+                    "mainSeriesProperties.candleStyle.wickDownColor": "#ef4444"
+                }
+            });
+        }
+
+        // Chart Tabs
+        const chartTabs = document.querySelectorAll('.chart-tab');
+        const chartPairs = {
+            'BTCUSDT': { symbol: 'BINANCE:BTCUSDT', name: 'BTC/USDT', change: '+2.4%', up: true },
+            'ETHUSDT': { symbol: 'BINANCE:ETHUSDT', name: 'ETH/USDT', change: '+1.8%', up: true },
+            'SOLUSDT': { symbol: 'BINANCE:SOLUSDT', name: 'SOL/USDT', change: '-0.5%', up: false },
+            'EURUSD': { symbol: 'FX:EURUSD', name: 'EUR/USD', change: '+0.3%', up: true },
+            'XAUUSD': { symbol: 'OANDA:XAUUSD', name: 'Gold', change: '+0.7%', up: true }
+        };
+
+        chartTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                chartTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const pair = chartPairs[tab.dataset.pair];
+                initChart(pair.symbol);
+                const chartPair = document.querySelector('.chart-pair');
+                const icon = tab.dataset.pair.includes('BTC') ? 'fab fa-bitcoin' : 
+                            tab.dataset.pair.includes('ETH') ? 'fab fa-ethereum' :
+                            tab.dataset.pair.includes('SOL') ? 'fas fa-sun' :
+                            tab.dataset.pair.includes('EUR') ? 'fas fa-euro-sign' : 'fas fa-coins';
+                chartPair.innerHTML = `<i class="${icon}"></i><span>${pair.name}</span><span class="${pair.up ? 'price-up' : 'price-down'}">${pair.up ? '▲' : '▼'} ${pair.change.replace(/[+-]/, '')}</span>`;
+            });
+        });
+        initChart();
+
+        // Mobile Menu
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const mobileClose = document.getElementById('mobileClose');
+        const mobileLinks = document.querySelectorAll('.mobile-menu-links a');
+
+        function openMobileMenu() { mobileMenu.classList.add('active'); mobileOverlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeMobileMenu() { mobileMenu.classList.remove('active'); mobileOverlay.classList.remove('active'); document.body.style.overflow = ''; }
+
+        mobileToggle.addEventListener('click', openMobileMenu);
+        mobileClose.addEventListener('click', closeMobileMenu);
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Scroll Animations
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        fadeElements.forEach(el => observer.observe(el));
+
+        // Particle Animation
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Form Submissions
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast('Successfully subscribed to newsletter!');
+            e.target.reset();
+        });
+
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast("Message sent successfully! We'll respond within 24 hours.");
+            e.target.reset();
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Animate progress bars on scroll
+        const progressBars = document.querySelectorAll('.progress-fill');
+        const progressObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const width = entry.target.style.width;
+                    entry.target.style.width = '0%';
+                    setTimeout(() => { entry.target.style.width = width; }, 200);
+                }
+            });
+        }, { threshold: 0.5 });
+        progressBars.forEach(bar => progressObserver.observe(bar));
+    </script>
+</body>
+</html>
